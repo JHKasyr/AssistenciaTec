@@ -78,8 +78,9 @@ public class ClienteModel {
         return new AlterarBD().searchModel(nome);
     }
 
-    public void alterarCliente(ClienteModel clienteAjuste) {
-        new AlterarBD().alterarClienteBD(clienteAjuste);
+    public void alterarCliente(ClienteModel alterarCliente) {
+        
+        new AlterarBD().alterarClienteBD(alterarCliente);
     }
 
     public void excluirCliente(String cpf) {

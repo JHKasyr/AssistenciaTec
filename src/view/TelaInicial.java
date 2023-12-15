@@ -268,8 +268,18 @@ public class TelaInicial extends javax.swing.JFrame {
         });
 
         btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnNovo.setText("Novo");
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -390,6 +400,19 @@ public class TelaInicial extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        TableClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TableClientesMouseClicked(evt);
+            }
+        });
+        TableClientes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TableClientesKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TableClientesKeyReleased(evt);
             }
         });
         jScrollPane2.setViewportView(TableClientes);
@@ -521,7 +544,7 @@ public class TelaInicial extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(265, 265, 265)
+                .addGap(238, 238, 238)
                 .addComponent(PanelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -549,7 +572,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuCadastroEquipamentoActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-
+        
         int valor = JOptionPane.showConfirmDialog(null,
                 "Deseja realmente cancelar?",
                 "Confirma Exclusão",
@@ -590,11 +613,18 @@ public class TelaInicial extends javax.swing.JFrame {
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
 
         //Cliente
+        txtCPF.setText("");
+        txtNome.setText("");
+        txtTelefone.setText("");
+        txtCidade.setText("");
+        txtDataCriacao.setText("");
         txtNome.setEditable(true);
         txtCPF.setEditable(true);
         txtTelefone.setEnabled(true);
         txtCidade.setEnabled(true);
         txtDataCriacao.setEnabled(true);
+        txtDataCriacao.setEditable(true);
+        txtCPF.setEditable(true);
 
         //Equipamento
         txtTipo.setEnabled(true);
@@ -651,6 +681,73 @@ public class TelaInicial extends javax.swing.JFrame {
 
         // fazer o View dps
     }//GEN-LAST:event_btnSalvarEquipamentosActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        String cpf = txtCPF.getText();
+        String nome = txtNome.getText();
+        String Telefone = txtTelefone.getText();
+        String cidade = txtCidade.getText();
+        String dataCriacao = txtDataCriacao.getText();
+
+        ClienteController alterarCliente = new ClienteController();
+        alterarCliente.alterarCliente(cpf, nome, Telefone, cidade, dataCriacao);
+        ListarClientesView();
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        String cpf = txtCPF.getText();
+        String nome = txtNome.getText();
+        String telefone = txtTelefone.getText();
+        String cidade = txtCidade.getText();
+
+        ClienteController excluirCliente = new ClienteController();
+        excluirCliente.excluirCliente(cpf);
+        txtCidade.setText("");
+        txtTelefone.setText("");
+        txtNome.setText("");
+        ListarClientesView();
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void TableClientesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TableClientesKeyPressed
+        String nome = TableClientes.getModel().getValueAt(TableClientes.getSelectedRow(), 1).toString();
+        String telefone = TableClientes.getModel().getValueAt(TableClientes.getSelectedRow(), 2).toString();
+        String cidade = TableClientes.getModel().getValueAt(TableClientes.getSelectedRow(), 3).toString();
+        String cpfAux = TableClientes.getModel().getValueAt(TableClientes.getSelectedRow(), 0).toString();
+        
+        txtNome.setText(nome);
+        txtCidade.setText(cidade);
+        txtTelefone.setText(telefone);
+        txtCPF.setText(cpfAux);
+    }//GEN-LAST:event_TableClientesKeyPressed
+
+    private void TableClientesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TableClientesKeyReleased
+        String nome = TableClientes.getModel().getValueAt(TableClientes.getSelectedRow(), 1).toString();
+        String telefone = TableClientes.getModel().getValueAt(TableClientes.getSelectedRow(), 2).toString();
+        String cidade = TableClientes.getModel().getValueAt(TableClientes.getSelectedRow(), 3).toString();
+        String cpfAux = TableClientes.getModel().getValueAt(TableClientes.getSelectedRow(), 0).toString();
+        
+        txtNome.setText(nome);
+        txtCidade.setText(cidade);
+        txtTelefone.setText(telefone);
+        txtCPF.setText(cpfAux);
+    }//GEN-LAST:event_TableClientesKeyReleased
+
+    private void TableClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableClientesMouseClicked
+        
+        String nome = TableClientes.getModel().getValueAt(TableClientes.getSelectedRow(), 1).toString();
+        String telefone = TableClientes.getModel().getValueAt(TableClientes.getSelectedRow(), 2).toString();
+        String cidade = TableClientes.getModel().getValueAt(TableClientes.getSelectedRow(), 3).toString();
+        String cpfAux = TableClientes.getModel().getValueAt(TableClientes.getSelectedRow(), 0).toString();
+        String dataCriacao = TableClientes.getModel().getValueAt(TableClientes.getSelectedRow(), 4).toString();
+
+        txtNome.setText(nome);
+        txtCidade.setText(cidade);
+        txtTelefone.setText(telefone);
+        txtCPF.setText(cpfAux);
+        txtDataCriacao.setText(dataCriacao);
+        txtDataCriacao.setEditable(false);
+        txtCPF.setEditable(false);
+    }//GEN-LAST:event_TableClientesMouseClicked
 
     /**
      * @param args the command line arguments

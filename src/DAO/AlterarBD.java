@@ -114,7 +114,7 @@ public class AlterarBD {
                     cliente.setNome(rs.getString("nome"));
                     cliente.setTelefone(rs.getString("telefone"));
                     cliente.setCidade(rs.getString("Cidade"));
-                    cliente.setDataCriacao(rs.getString("datacriacao"));
+                    cliente.setDataCriacao(rs.getString("dataCriacao"));
                     listaClientes.add(cliente);
                 }
             }
@@ -195,20 +195,19 @@ public class AlterarBD {
         return listaClientes;
     }
 
-    public void alterarClienteBD(ClienteModel clienteAjuste) {
-
+    public void alterarClienteBD(ClienteModel alterarCliente) {
         Connection conn = null;
         PreparedStatement stmt = null;
 
-        String sql = "UPDATE ROOT.CLIENTE SET nome=?, telefone=?,cidade=? WHERE cpf=?";
+        String sql = "UPDATE CLIENTE SET nome=?, telefone=?,cidade=? WHERE cpf=?";
 
         try {
             conn = new ConexaoBD().getConnection();
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1, clienteAjuste.getNome());
-            stmt.setString(2, clienteAjuste.getCidade());
-            stmt.setString(3, clienteAjuste.getTelefone());
-            stmt.setString(4, clienteAjuste.getCpf());
+            stmt.setString(2, alterarCliente.getNome());
+            stmt.setString(3, alterarCliente.getTelefone());
+            stmt.setString(4, alterarCliente.getCidade());
+            stmt.setString(1, alterarCliente.getCpf());
             stmt.execute();
             JOptionPane.showMessageDialog(null, "Sucesso ao alterar contato");
         } catch (Exception e) {

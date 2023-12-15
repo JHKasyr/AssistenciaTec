@@ -38,7 +38,6 @@ public class ClienteController {
     }
         
     public void alterarCliente(String cpf, String nome, String telefone, String cidade,  String dataCriacao){
-        
         if ((nome != null && nome.length() > 0)
                 && (cpf != null && cpf.length() > 0)
                 && (telefone != null && telefone.length() > 0)
@@ -50,9 +49,13 @@ public class ClienteController {
         }
     }
     
-    public void excluirContato(String cpf){
+    public void excluirCliente(String cpf){
         
         ClienteModel cpfCliente = new ClienteModel();
         cpfCliente.excluirCliente(cpf);
     }
+    public ArrayList<ClienteModel> ListarContatoController(){
+        ClienteModel cliente = new ClienteModel();
+        return cliente.buscarCliente();
+}
 }
