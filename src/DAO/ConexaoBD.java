@@ -8,13 +8,13 @@ public class ConexaoBD {
     
         Connection conn = null;
         String className = "org.apache.derby.jdbc.ClientDriver";
-        String url = "bancoInformatica";
-        String user = "Root";
+        String url = "jdbc:derby://localhost:1527/BancoDadosAssist";
+        String user = "root";
         String password = "123";
         
         try {
             Class.forName(className);
-            System.out.println("ClasseName com valor incorreto!");
+            System.out.println("ClasseName com valor correto!");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erro ao realizar conexão!");
