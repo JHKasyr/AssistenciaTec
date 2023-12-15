@@ -7,6 +7,7 @@ package View;
 import Controller.ClienteController;
 import Controller.EquipamentoController;
 import Model.ClienteModel;
+import Model.EquipamentoModel;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JOptionPane;
@@ -662,15 +663,14 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void btnSalvarEquipamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarEquipamentosActionPerformed
 
-        String tipo = txtTipo.getText();
-        String cpfequipamento = txtCPFEquipamento.getText();
+        String cpf = txtCPFEquipamento.getText();
         String marca = txtMarca.getText();
         String modelo = txtModelo.getText();
-        String defeito = txtDefeito.getText();
+        String TipoDefeito = txtDefeito.getText();
         String prazoEntrega = txtPrazoEntrega.getText();
 
         EquipamentoController novoEquipamento = new EquipamentoController();
-        novoEquipamento.cadastrarEquipamentoController(tipo, cpfequipamento, marca, modelo, defeito, prazoEntrega);
+        novoEquipamento.cadastrarEquipamentoController(modelo,marca,TipoDefeito,prazoEntrega,cpf);
 
         txtTipo.setText("");
         txtCPFEquipamento.setText("");
@@ -807,6 +807,31 @@ public class TelaInicial extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }
+        void ListarEquipamentosView() {
+        try {
+            DefaultTableModel dtm = (DefaultTableModel) TableEquipamentos.getModel();
+            dtm.setRowCount(0);
+            EquipamentoController EquipamentoController = new EquipamentoController();
+
+            ArrayList<EquipamentoModel> listaEquipamento = EquipamentoController.listarEquipamentosController();
+
+            Iterator<EquipamentoModel> iterator = listaEquipamento.iterator();
+            while (iterator.hasNext()) {
+                EquipamentoModel equip = iterator.next();
+                dtm.addRow(new Object[]{
+                    equip.getId(),
+                    equip.getModelo(),
+                    equip.getEquipMarca(),
+                    equip.getTipoDefeito(),
+                    equip.getPrazoEntrega(),
+                    equip.getCpf()
+                });
+            }
+
+        } catch (Exception e) {
+        }
+    }
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

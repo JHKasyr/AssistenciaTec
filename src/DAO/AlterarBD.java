@@ -52,19 +52,20 @@ public class AlterarBD {
     }
 
     public void inserirEquipamentoDAO(EquipamentoModel novoEquipamento) {
-        String sql = "INSERT INTO cliente (id, equipamentotipo, equipmarca, modelo, tipodefeito) VALUES(?,?,?)";
+        String sql = "INSERT INTO EQUIPAMENTO (id, modelo, marca, tipodefeito, prazoentrega, cpf) VALUES(1,?,?,?,?,?)";
         PreparedStatement stmt = null;
         Connection connection = null;
 
         try {
             connection = new ConexaoBD().getConnection();
             stmt = connection.prepareStatement(sql);
-            stmt.setInt(6, novoEquipamento.getId());
-            stmt.setString(7, novoEquipamento.getTipoEquipamento());
-            stmt.setString(8, novoEquipamento.getModelo());
-            stmt.setString(9, novoEquipamento.getEquipMarca());
-            stmt.setString(10, novoEquipamento.getTipoDefeito());
-
+            stmt.setString(1, novoEquipamento.getModelo());
+            stmt.setString(2, novoEquipamento.getEquipMarca());
+            stmt.setString(3, novoEquipamento.getTipoDefeito());
+            stmt.setString(4, novoEquipamento.getPrazoEntrega());
+            stmt.setString(5, novoEquipamento.getCpf());
+            stmt.execute();
+            JOptionPane.showMessageDialog(null, "Cadastros feito");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erro ao realizar regitro!");
@@ -100,7 +101,7 @@ public class AlterarBD {
         ClienteModel cliente = null;
         ArrayList<ClienteModel> listaClientes = null;
 
-        String sql = "SELECT * FROM ROOT.CLIENTE";
+        String sql = "SELECT * FROM ROOT.cliente";
 
         try {
             conn = new ConexaoBD().getConnection();
@@ -199,15 +200,15 @@ public class AlterarBD {
         Connection conn = null;
         PreparedStatement stmt = null;
 
-        String sql = "UPDATE CLIENTE SET nome=?, telefone=?,cidade=? WHERE cpf=?";
+        String sql = "UPDATE ROOT.CLIENTE SET nome=?, telefone=?,cidade=? WHERE cpf=?";
 
         try {
             conn = new ConexaoBD().getConnection();
             stmt = conn.prepareStatement(sql);
-            stmt.setString(2, alterarCliente.getNome());
-            stmt.setString(3, alterarCliente.getTelefone());
-            stmt.setString(4, alterarCliente.getCidade());
-            stmt.setString(1, alterarCliente.getCpf());
+            stmt.setString(1, alterarCliente.getNome());
+            stmt.setString(2, alterarCliente.getTelefone());
+            stmt.setString(3, alterarCliente.getCidade());
+            stmt.setString(4, alterarCliente.getCpf());
             stmt.execute();
             JOptionPane.showMessageDialog(null, "Sucesso ao alterar contato");
         } catch (Exception e) {
@@ -248,7 +249,222 @@ public class AlterarBD {
             JOptionPane.showMessageDialog(null, "Exclusão realizada com sucesso");
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Errp ao realizar exclusão de dados " + e);
+            JOptionPane.showMessageDialog(null, "Erro ao realizar exclusão de dados " + e);
         }
     }
+    public ArrayList<EquipamentoModel> listarTodosEquipamentos() {
+
+        ResultSet rs = null;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        EquipamentoModel equipamento = null;
+        ArrayList<EquipamentoModel> listaEquipamentos = null;
+
+        String sql = "SELECT * FROM ROOT.EQUIPAMENTO";
+
+        try {
+            conn = new ConexaoBD().getConnection();
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            if (rs != null) {
+                listaEquipamentos = new ArrayList<>();
+                while (rs.next()) {
+                    equipamento = new EquipamentoModel();
+                    equipamento.setId(rs.getInt("id"));
+                    equipamento.setModelo(rs.getString("modelo"));
+                    equipamento.setEquipMarca(rs.getString("marca"));
+                    equipamento.setTipoDefeito(rs.getString("tipodefeito"));
+                    equipamento.setPrazoEntrega(rs.getString("prazoentrega"));
+                    equipamento.setCpf(rs.getString("cpf"));
+                    listaEquipamentos.add(equipamento);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erro ao realizar regitro!");
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (Exception e) {
+                System.out.println("Erro ao finalizar steatment!");
+                e.printStackTrace();
+            }
+
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                System.out.println("Erro ao finalizar conexao com o banco de dados!");
+                e.printStackTrace();
+            }
+        }
+        return listaEquipamentos;
+    }
+
+    public ArrayList<EquipamentoModel> searchEquipModel(String cpf) {
+
+        ResultSet rs = null;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        EquipamentoModel equip = null;
+        ArrayList<EquipamentoModel> listaEquipamentos = null;
+
+        String sql = "SELECT *" + " FROM ROOT.EQUIPAMENTO WHERE nome LIKE '%" + cpf + "%' ORDER BY nome";
+
+        try {
+            conn = new ConexaoBD().getConnection();
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            if (rs != null) {
+                listaEquipamentos = new ArrayList<>();
+                while (rs.next()) {
+                    equip = new EquipamentoModel();
+                    equip.setId(rs.getInt("id"));
+                    equip.setModelo(rs.getString("modelo"));
+                    equip.setEquipMarca(rs.getString("marca"));
+                    equip.setTipoDefeito(rs.getString("tipodefeito"));
+                    equip.setPrazoEntrega(rs.getString("praazoentrega"));
+                    equip.setCpf(rs.getString("cpf"));
+                    listaEquipamentos.add(equip);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erro ao realizar regitro!");
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (Exception e) {
+                System.out.println("Erro ao finalizar steatment!");
+                e.printStackTrace();
+            }
+
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                System.out.println("Erro ao finalizar conexao com o banco de dados!");
+                e.printStackTrace();
+            }
+        }
+        return listaEquipamentos;
+    }
+
+    public void alterarEquipamentoBD(EquipamentoModel alterarEquipamento) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        String sql = "UPDATE ROOT.EQUIPAMENTO SET MODELO=?, MARCA=?,TIPODEFEITO=?, PRAZOENTRGA=? WHERE id=?";
+
+        try {
+            conn = new ConexaoBD().getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(2, alterarEquipamento.getModelo());
+            stmt.setString(3, alterarEquipamento.getEquipMarca());
+            stmt.setString(4, alterarEquipamento.getTipoDefeito());
+            stmt.setString(5, alterarEquipamento.getPrazoEntrega());
+            stmt.setInt(1, alterarEquipamento.getId());
+            stmt.execute();
+            JOptionPane.showMessageDialog(null, "Sucesso ao alterar contato");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "erro ao alterar contato \n" + e);
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (Exception e) {
+                System.out.println("Erro ao finalizar steatment!");
+                e.printStackTrace();
+            }
+
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                System.out.println("Erro ao finalizar conexao com o banco de dados!");
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void excluirEquipamentoBD(int id) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        String sql = "DELETE FROM ROOT.EQUIPAMENTO WHERE id=?";
+
+        try {
+            conn = new ConexaoBD().getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            stmt.execute();
+            JOptionPane.showMessageDialog(null, "Exclusão realizada com sucesso");
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao realizar exclusão de dados " + e);
+        }
+    }
+    public ArrayList<EquipamentoModel> listarTodosEquipamento() {
+
+        ResultSet rs = null;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        EquipamentoModel equip = null;
+        ArrayList<EquipamentoModel> listaEquipamentos = null;
+
+        String sql = "SELECT * FROM ROOT.EQUIPAMENTO";
+
+        try {
+            conn = new ConexaoBD().getConnection();
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            if (rs != null) {
+                listaEquipamentos = new ArrayList<>();
+                while (rs.next()) {
+                    equip = new EquipamentoModel();
+                    equip.setModelo(rs.getString("modelo"));
+                    equip.setEquipMarca(rs.getString("Marca"));
+                    equip.setTipoDefeito(rs.getString("Tipodefeito"));
+                    equip.setPrazoEntrega(rs.getString("prazoEntrega"));
+                    equip.setCpf(rs.getString("cpf"));
+                    listaEquipamentos.add(equip);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erro ao realizar regitro!");
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (Exception e) {
+                System.out.println("Erro ao finalizar steatment!");
+                e.printStackTrace();
+            }
+
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                System.out.println("Erro ao finalizar conexao com o banco de dados!");
+                e.printStackTrace();
+            }
+        }
+        return listaEquipamentos;
+    }
+
 }

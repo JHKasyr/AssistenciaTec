@@ -1,12 +1,14 @@
 package Model;
 
+import DAO.AlterarBD;
+import java.util.ArrayList;
+
 public class EquipamentoModel {
     
     // Atributos
     private Integer id;
-    private String tipoEquipamento;
     private String cpf;
-    private String equipMarca;
+    private String marca;
     private String modelo;
     private String tipoDefeito;
     private String prazoEntrega;
@@ -16,11 +18,10 @@ public class EquipamentoModel {
     public EquipamentoModel() {
     }
 
-    public EquipamentoModel(int id, String tipoEquipamento, String cpf, String equipMarca, String modelo, String tipoDefeito, String prazoEntrega) {
+    public EquipamentoModel(String modelo, String marca, String tipoDefeito, String prazoEntrega, String cpf) {
         this.id = id;
-        this.tipoEquipamento = tipoEquipamento;
         this.cpf = cpf;
-        this.equipMarca = equipMarca;
+        this.marca = marca;
         this.modelo = modelo;
         this.tipoDefeito = tipoDefeito;
         this.prazoEntrega = prazoEntrega;
@@ -34,14 +35,6 @@ public class EquipamentoModel {
         this.id = id;
     }
 
-    public String getTipoEquipamento() {
-        return tipoEquipamento;
-    }
-
-    public void setTipoEquipamento(String tipoEquipamento) {
-        this.tipoEquipamento = tipoEquipamento;
-    }
-
     public String getCpf() {
         return cpf;
     }
@@ -51,11 +44,11 @@ public class EquipamentoModel {
     }
 
     public String getEquipMarca() {
-        return equipMarca;
+        return marca;
     }
 
     public void setEquipMarca(String equipMarca) {
-        this.equipMarca = equipMarca;
+        this.marca = equipMarca;
     }
 
     public String getModelo() {
@@ -80,6 +73,27 @@ public class EquipamentoModel {
 
     public void setPrazoEntrega(String prazoEntrega) {
         this.prazoEntrega = prazoEntrega;
+    }
+    public void cadastrarEquipamentoDAO(EquipamentoModel novoEquipamento) {
+        AlterarBD novoRegistro = new AlterarBD();
+        novoRegistro.inserirEquipamentoDAO(novoEquipamento);
+    }
+
+    public ArrayList<EquipamentoModel> buscarEquipamento() {
+        return new AlterarBD().listarTodosEquipamentos();
+    }
+
+    public ArrayList<EquipamentoModel> searchEquipamento(String equipamento) {
+        return new AlterarBD().searchEquipModel(equipamento);
+    }
+
+    public void alterarEquipamento(EquipamentoModel alterarEquipamento) {
+        
+        new AlterarBD().alterarEquipamentoBD(alterarEquipamento);
+    }
+
+    public void excluirEquipamento(int id) {
+        new AlterarBD().excluirEquipamentoBD(id);
     }
 }
     
