@@ -273,6 +273,7 @@ public class AlterarBD {
                 while (rs.next()) {
                     equipamento = new EquipamentoModel();
                     equipamento.setId(rs.getInt("id"));
+                    equipamento.setTipo(rs.getString("tipo"));
                     equipamento.setModelo(rs.getString("modelo"));
                     equipamento.setEquipMarca(rs.getString("marca"));
                     equipamento.setTipoDefeito(rs.getString("tipodefeito"));
@@ -314,9 +315,7 @@ public class AlterarBD {
 
         EquipamentoModel equip = null;
         ArrayList<EquipamentoModel> listaEquipamentos = null;
-        JOptionPane.showMessageDialog(null, "chegando antes do BD");
         String sql = "SELECT * FROM ROOT.EQUIPAMENTO WHERE cpf LIKE '%" + cpf + "%' ORDER BY cpf";
-        JOptionPane.showMessageDialog(null, "chegando depois do BD");
         try {
             conn = new ConexaoBD().getConnection();
             stmt = conn.prepareStatement(sql);
@@ -334,7 +333,6 @@ public class AlterarBD {
                     equip.setPrazoEntrega(rs.getString("prazoentrega"));
                     equip.setCpf(rs.getString("cpf"));
                     listaEquipamentos.add(equip);
-                    JOptionPane.showMessageDialog(null, "1");
                 }
             }
         } catch (Exception e) {
@@ -342,7 +340,6 @@ public class AlterarBD {
             System.out.println("Erro ao realizar regitro!");
         } finally {
             try {
-                JOptionPane.showMessageDialog(null, "H");
                 if (stmt != null) {
                     stmt.close();
                 }
