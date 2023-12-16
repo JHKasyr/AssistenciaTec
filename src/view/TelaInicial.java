@@ -43,6 +43,10 @@ public class TelaInicial extends javax.swing.JFrame {
         txtModelo.setEnabled(false);
         txtDefeito.setEnabled(false);
         txtPrazoEntrega.setEnabled(false);
+        
+        // Tabelas
+        ListarClientesView();
+        ListarEquipamentosView();
     }
 
     /**
@@ -94,7 +98,8 @@ public class TelaInicial extends javax.swing.JFrame {
         PanelFiltro = new javax.swing.JPanel();
         lblCPFFiltro = new javax.swing.JLabel();
         txtCPFFiltro = new javax.swing.JTextField();
-        btnFiltrar = new javax.swing.JButton();
+        btnFiltrarCliente = new javax.swing.JButton();
+        btnFiltrarEquipamento = new javax.swing.JButton();
         PanelTabelaCliente = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         TableClientes = new javax.swing.JTable();
@@ -342,10 +347,17 @@ public class TelaInicial extends javax.swing.JFrame {
 
         lblCPFFiltro.setText("CPF:");
 
-        btnFiltrar.setText("Filtrar");
-        btnFiltrar.addActionListener(new java.awt.event.ActionListener() {
+        btnFiltrarCliente.setText("Filtro Cli.");
+        btnFiltrarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFiltrarActionPerformed(evt);
+                btnFiltrarClienteActionPerformed(evt);
+            }
+        });
+
+        btnFiltrarEquipamento.setText("Filtro Equip.");
+        btnFiltrarEquipamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltrarEquipamentoActionPerformed(evt);
             }
         });
 
@@ -358,8 +370,10 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addComponent(lblCPFFiltro)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtCPFFiltro)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnFiltrarEquipamento)
+                .addGap(18, 18, 18)
+                .addComponent(btnFiltrarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         PanelFiltroLayout.setVerticalGroup(
@@ -371,7 +385,9 @@ public class TelaInicial extends javax.swing.JFrame {
                     .addComponent(txtCPFFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(15, Short.MAX_VALUE))
             .addGroup(PanelFiltroLayout.createSequentialGroup()
-                .addComponent(btnFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(PanelFiltroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnFiltrarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(btnFiltrarEquipamento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -628,6 +644,12 @@ public class TelaInicial extends javax.swing.JFrame {
         txtCPF.setEditable(true);
 
         //Equipamento
+        txtTipo.setText("");
+        txtCPFEquipamento.setText("");
+        txtMarca.setText("");
+        txtModelo.setText("");
+        txtDefeito.setText("");
+        txtPrazoEntrega.setText("");
         txtTipo.setEnabled(true);
         txtCPFEquipamento.setEnabled(true);
         txtMarca.setEnabled(true);
@@ -636,9 +658,30 @@ public class TelaInicial extends javax.swing.JFrame {
         txtPrazoEntrega.setEnabled(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
-    private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnFiltrarActionPerformed
+    private void btnFiltrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarClienteActionPerformed
+        String itemPesquisa = txtCPFFiltro.getText();
+        try {
+            DefaultTableModel dtm = (DefaultTableModel) TableClientes.getModel();
+            dtm.setRowCount(0);
+            ClienteController clienteController = new ClienteController();
+            
+            ArrayList<ClienteModel> listaClientes = clienteController.searchCliente(itemPesquisa);
+            Iterator<ClienteModel> iteratorCliente = listaClientes.iterator();
+            while (iteratorCliente.hasNext()) {
+                ClienteModel cliente = iteratorCliente.next();
+                dtm.addRow(new Object[]{
+                    cliente.getCpf(),
+                    cliente.getNome(),
+                    cliente.getTelefone(),
+                    cliente.getCidade(),
+                    cliente.getDataCriacao()
+                });
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "deu merda");
+        }
+    }//GEN-LAST:event_btnFiltrarClienteActionPerformed
 
     private void btnSalvarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarClientesActionPerformed
 
@@ -664,13 +707,14 @@ public class TelaInicial extends javax.swing.JFrame {
     private void btnSalvarEquipamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarEquipamentosActionPerformed
 
         String cpf = txtCPFEquipamento.getText();
+        String tipo = txtTipo.getText();
         String marca = txtMarca.getText();
         String modelo = txtModelo.getText();
         String TipoDefeito = txtDefeito.getText();
         String prazoEntrega = txtPrazoEntrega.getText();
 
         EquipamentoController novoEquipamento = new EquipamentoController();
-        novoEquipamento.cadastrarEquipamentoController(modelo,marca,TipoDefeito,prazoEntrega,cpf);
+        novoEquipamento.cadastrarEquipamentoController(modelo,marca,TipoDefeito,tipo,prazoEntrega,cpf);
 
         txtTipo.setText("");
         txtCPFEquipamento.setText("");
@@ -680,6 +724,7 @@ public class TelaInicial extends javax.swing.JFrame {
         txtPrazoEntrega.setText("");
 
         // fazer o View dps
+        ListarEquipamentosView();
     }//GEN-LAST:event_btnSalvarEquipamentosActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
@@ -748,6 +793,33 @@ public class TelaInicial extends javax.swing.JFrame {
         txtDataCriacao.setEditable(false);
         txtCPF.setEditable(false);
     }//GEN-LAST:event_TableClientesMouseClicked
+
+    private void btnFiltrarEquipamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarEquipamentoActionPerformed
+        
+        String itemPesquisa = txtCPFFiltro.getText();
+        try {
+            DefaultTableModel dtm = (DefaultTableModel) TableEquipamentos.getModel();
+            dtm.setRowCount(0);
+            EquipamentoController equipamentoController = new EquipamentoController();
+            
+            ArrayList<EquipamentoModel> listaEquipamento = equipamentoController.searchEquipamento(itemPesquisa);
+            Iterator<EquipamentoModel> iteratorEquipamento = listaEquipamento.iterator();
+            while (iteratorEquipamento.hasNext()) {
+                EquipamentoModel equipamento = iteratorEquipamento.next();
+                dtm.addRow(new Object[]{
+                    equipamento.getTipo(),
+                    equipamento.getModelo(),
+                    equipamento.getEquipMarca(),
+                    equipamento.getTipoDefeito(),
+                    equipamento.getPrazoEntrega(),
+                    equipamento.getCpf()
+                });
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "deu merda");
+        }
+    }//GEN-LAST:event_btnFiltrarEquipamentoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -850,7 +922,8 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnExcluir;
-    private javax.swing.JButton btnFiltrar;
+    private javax.swing.JButton btnFiltrarCliente;
+    private javax.swing.JButton btnFiltrarEquipamento;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnSalvarClientes;
     private javax.swing.JToggleButton btnSalvarEquipamentos;

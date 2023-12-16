@@ -52,7 +52,7 @@ public class AlterarBD {
     }
 
     public void inserirEquipamentoDAO(EquipamentoModel novoEquipamento) {
-        String sql = "INSERT INTO EQUIPAMENTO (id, modelo, marca, tipodefeito, prazoentrega, cpf) VALUES(1,?,?,?,?,?)";
+        String sql = "INSERT INTO EQUIPAMENTO (modelo, marca, tipodefeito, prazoentrega, cpf, tipo) VALUES(?,?,?,?,?,?)";
         PreparedStatement stmt = null;
         Connection connection = null;
 
@@ -64,6 +64,7 @@ public class AlterarBD {
             stmt.setString(3, novoEquipamento.getTipoDefeito());
             stmt.setString(4, novoEquipamento.getPrazoEntrega());
             stmt.setString(5, novoEquipamento.getCpf());
+            stmt.setString(6, novoEquipamento.getTipo());
             stmt.execute();
             JOptionPane.showMessageDialog(null, "Cadastros feito");
         } catch (Exception e) {
@@ -144,7 +145,7 @@ public class AlterarBD {
         return listaClientes;
     }
 
-    public ArrayList<ClienteModel> searchModel(String nome) {
+    public ArrayList<ClienteModel> searchModel(String cpf) {
 
         ResultSet rs = null;
         Connection conn = null;
@@ -153,7 +154,7 @@ public class AlterarBD {
         ClienteModel cliente = null;
         ArrayList<ClienteModel> listaClientes = null;
 
-        String sql = "SELECT *" + " FROM ROOT.CLIENTE WHERE nome LIKE '%" + nome + "%' ORDER BY nome";
+        String sql = "SELECT * FROM ROOT.CLIENTE WHERE cpf LIKE '%" + cpf + "%' ORDER BY cpf";
 
         try {
             conn = new ConexaoBD().getConnection();
@@ -313,24 +314,27 @@ public class AlterarBD {
 
         EquipamentoModel equip = null;
         ArrayList<EquipamentoModel> listaEquipamentos = null;
-
-        String sql = "SELECT *" + " FROM ROOT.EQUIPAMENTO WHERE nome LIKE '%" + cpf + "%' ORDER BY nome";
-
+        JOptionPane.showMessageDialog(null, "chegando antes do BD");
+        String sql = "SELECT * FROM ROOT.EQUIPAMENTO WHERE cpf LIKE '%" + cpf + "%' ORDER BY cpf";
+        JOptionPane.showMessageDialog(null, "chegando depois do BD");
         try {
             conn = new ConexaoBD().getConnection();
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
+            JOptionPane.showMessageDialog(null, "conexao feita");
             if (rs != null) {
+                JOptionPane.showMessageDialog(null, "passou do if");
                 listaEquipamentos = new ArrayList<>();
                 while (rs.next()) {
+                    JOptionPane.showMessageDialog(null, "antes do começo do .nexxt");
                     equip = new EquipamentoModel();
-                    equip.setId(rs.getInt("id"));
                     equip.setModelo(rs.getString("modelo"));
                     equip.setEquipMarca(rs.getString("marca"));
                     equip.setTipoDefeito(rs.getString("tipodefeito"));
-                    equip.setPrazoEntrega(rs.getString("praazoentrega"));
+                    equip.setPrazoEntrega(rs.getString("prazoentrega"));
                     equip.setCpf(rs.getString("cpf"));
                     listaEquipamentos.add(equip);
+                    JOptionPane.showMessageDialog(null, "1");
                 }
             }
         } catch (Exception e) {
@@ -338,6 +342,7 @@ public class AlterarBD {
             System.out.println("Erro ao realizar regitro!");
         } finally {
             try {
+                JOptionPane.showMessageDialog(null, "H");
                 if (stmt != null) {
                     stmt.close();
                 }

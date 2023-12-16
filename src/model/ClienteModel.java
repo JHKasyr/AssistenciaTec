@@ -74,8 +74,8 @@ public class ClienteModel {
         return new AlterarBD().listarTodosClientes();
     }
 
-    public ArrayList<ClienteModel> searchCliente(String nome) {
-        return new AlterarBD().searchModel(nome);
+    public ArrayList<ClienteModel> searchCliente(String cpf) {
+        return new AlterarBD().searchModel(cpf);
     }
 
     public void alterarCliente(ClienteModel alterarCliente) {

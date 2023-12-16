@@ -7,6 +7,7 @@ public class EquipamentoModel {
     
     // Atributos
     private Integer id;
+    private String tipo;
     private String cpf;
     private String marca;
     private String modelo;
@@ -18,8 +19,9 @@ public class EquipamentoModel {
     public EquipamentoModel() {
     }
 
-    public EquipamentoModel(String modelo, String marca, String tipoDefeito, String prazoEntrega, String cpf) {
+    public EquipamentoModel(String tipo, String modelo, String marca, String tipoDefeito, String prazoEntrega, String cpf) {
         this.id = id;
+        this.tipo = tipo;
         this.cpf = cpf;
         this.marca = marca;
         this.modelo = modelo;
@@ -33,6 +35,14 @@ public class EquipamentoModel {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public String getCpf() {
@@ -83,8 +93,8 @@ public class EquipamentoModel {
         return new AlterarBD().listarTodosEquipamentos();
     }
 
-    public ArrayList<EquipamentoModel> searchEquipamento(String equipamento) {
-        return new AlterarBD().searchEquipModel(equipamento);
+    public ArrayList<EquipamentoModel> searchEquipamento(String cpf) {
+        return new AlterarBD().searchEquipModel(cpf);
     }
 
     public void alterarEquipamento(EquipamentoModel alterarEquipamento) {

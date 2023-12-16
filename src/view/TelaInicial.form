@@ -502,8 +502,10 @@
                           <Component id="lblCPFFiltro" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="txtCPFFiltro" max="32767" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnFiltrar" min="-2" pref="85" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="btnFiltrarEquipamento" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="btnFiltrarCliente" min="-2" pref="85" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -519,7 +521,10 @@
                           <EmptySpace pref="15" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="btnFiltrar" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="btnFiltrarCliente" pref="40" max="32767" attributes="0"/>
+                              <Component id="btnFiltrarEquipamento" max="32767" attributes="0"/>
+                          </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -533,12 +538,20 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtCPFFiltro">
                 </Component>
-                <Component class="javax.swing.JButton" name="btnFiltrar">
+                <Component class="javax.swing.JButton" name="btnFiltrarCliente">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Filtrar"/>
+                    <Property name="text" type="java.lang.String" value="Filtro Cli."/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFiltrarActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFiltrarClienteActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnFiltrarEquipamento">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Filtro Equip."/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFiltrarEquipamentoActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>

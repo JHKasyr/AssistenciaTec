@@ -58,4 +58,8 @@ public class ClienteController {
         ClienteModel cliente = new ClienteModel();
         return cliente.buscarCliente();
 }
+     public ArrayList<ClienteModel> searchCliente(String cpf){
+        ClienteModel contato = new ClienteModel();
+        return contato.searchCliente(cpf);
+    }
 }
